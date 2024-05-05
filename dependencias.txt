@@ -1,0 +1,4 @@
+npm install mongoose @nestjs/mongoose
+npm install bcrypt
+npm install amqplib amqp-connection-manager
+npm install @nestjs/microservices @nestjs/config
