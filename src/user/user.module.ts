@@ -5,6 +5,7 @@ import { USER } from 'src/common/models/models';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserController } from './user.controller';
 
+
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([

@@ -1,6 +1,6 @@
 import { UserService } from './user.service';
 import { UserDTO } from './dto/user.dto';
-import { Controller } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { UserMsg } from 'src/common/constants';
 
@@ -22,6 +22,7 @@ export class UserController {
   findOne(@Payload() id: string) {
     return this.userService.findOne(id);
   }
+
   @MessagePattern(UserMsg.UPDATE)
   update(@Payload() payload: any) {
     return this.userService.update(payload.id, payload.userDTO);
@@ -44,5 +45,19 @@ export class UserController {
     if (user && isValidPassword) return user;
 
     return null;
+  }
+
+  // Endpoint para generar el código de recuperación
+  @MessagePattern(UserMsg.GENERATE_RECOVERY_CODE)
+  async generateRecoveryCode(@Payload() email: string) {
+    console.log(email)
+    return this.userService.generateRecoveryCode(email);
+  }
+
+  // Endpoint para restablecer la contraseña
+  @MessagePattern(UserMsg.RESET_PASSWORD)
+  async resetPassword(@Payload() payload: { email: string; recoveryCode: string; newPassword: string }) {
+    const { email, recoveryCode, newPassword } = payload;
+    return this.userService.resetPassword(email, recoveryCode, newPassword);
   }
 }
